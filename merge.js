@@ -1,3 +1,5 @@
+export { mergeSort, merge };
+
 const mergeSort = (arr) => {
   /*
     1. Find center
@@ -33,6 +35,6 @@ const merge = (left, right) => {
   return newArr;
 };
 
-let ex = [3, 2, 1, 13, 8, 5, 0, 1];
+// let ex = [3, 2, 1, 13, 8, 5, 0, 1];
 
-console.log(mergeSort(ex));
+// console.log(mergeSort(ex));

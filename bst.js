@@ -182,13 +182,16 @@ const Tree = (arr) => {
     }
   };
 
-  const find = (value) => {
+  const find = (value, tick = null) => {
     // blah blah find
     let curr = _root;
+    let count = 0;
 
     while (curr) {
+      count += 1;
       let currentValue = curr.getValue();
       if (currentValue === value) {
+        if (tick) return count;
         return curr;
       }
 
@@ -250,14 +253,31 @@ const Tree = (arr) => {
 
   const height = (node) => {
     // Return height of node --> longest path from node to leaf
+    if (!node) return -1;
+
+    let left = height(node.getLeft());
+    let right = height(node.getRight());
+
+    return left > right ? left + 1 : right + 1;
   };
 
   const depth = (node) => {
     // Return depth of node
+    return find(node.getValue(), true);
   };
 
-  const isBalanced = () => {
+  const isBalanced = (node = _root) => {
     // Check if tree is balanced
+    if (!node) return -1;
+
+    let left = height(node.getLeft());
+    let right = height(node.getRight());
+
+    if (node === _root) {
+      return Math.abs(left - right) <= 1;
+    }
+
+    return left > right ? left + 1 : right + 1;
   };
 
   const rebalance = () => {
@@ -280,6 +300,10 @@ const Tree = (arr) => {
     inOrder,
     preOrder,
     postOrder,
+    height,
+    depth,
+    isBalanced,
+    rebalance,
   };
 };
 
@@ -302,6 +326,8 @@ spruce.prettyPrint();
 //   console.log(value.getValue());
 // });
 
-spruce.postOrder((value) => {
-  console.log(value.getValue());
-});
+// spruce.postOrder((value) => {
+//   console.log(value.getValue());
+// });
+
+console.log(spruce.isBalanced());

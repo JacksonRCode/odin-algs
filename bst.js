@@ -221,16 +221,31 @@ const Tree = (arr) => {
     levelOrder(callback, queue);
   };
 
-  const inOrder = (callback) => {
+  const inOrder = (callback, node = _root) => {
     // Inorder traversal
+    if (!node) return;
+
+    inOrder(callback, node.getLeft());
+    callback(node);
+    inOrder(callback, node.getRight());
   };
 
-  const preOrder = (callback) => {
+  const preOrder = (callback, node = _root) => {
     // pre order traversal
+    if (!node) return;
+
+    callback(node);
+    preOrder(callback, node.getLeft());
+    preOrder(callback, node.getRight());
   };
 
-  const postOrder = (callback) => {
+  const postOrder = (callback, node = _root) => {
     // post order traversal
+    if (!node) return;
+
+    postOrder(callback, node.getLeft());
+    postOrder(callback, node.getRight());
+    callback(node);
   };
 
   const height = (node) => {
@@ -262,6 +277,9 @@ const Tree = (arr) => {
     deleteItem,
     find,
     levelOrder,
+    inOrder,
+    preOrder,
+    postOrder,
   };
 };
 
@@ -272,6 +290,18 @@ spruce.insert(13);
 spruce.prettyPrint();
 // console.log(spruce.find(7));
 
-spruce.levelOrder((value) => {
+// spruce.levelOrder((value) => {
+//   console.log(value.getValue());
+// });
+
+// spruce.inOrder((value) => {
+//   console.log(value.getValue());
+// });
+
+// spruce.preOrder((value) => {
+//   console.log(value.getValue());
+// });
+
+spruce.postOrder((value) => {
   console.log(value.getValue());
 });

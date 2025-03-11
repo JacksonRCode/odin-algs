@@ -7,7 +7,7 @@ const Node = (value, left = null, right = null) => {
 
   const getValue = () => _value;
   const setValue = (newVal) => {
-    value = newVal;
+    _value = newVal;
   };
 
   const setLeft = (newLeft) => {
@@ -20,8 +20,8 @@ const Node = (value, left = null, right = null) => {
   const getRight = () => _right;
 
   const numKids = () => {
-    if (left || right) {
-      if (left && right) return 2;
+    if (_left || _right) {
+      if (_left && _right) return 2;
       return 1;
     }
     return 0;
@@ -47,7 +47,7 @@ const Tree = (arr) => {
 
     let mid = start + Math.floor((end - start) / 2);
 
-    let newRoot = Node(arr[mid]);
+    let newRoot = Node(array[mid]);
     // Left subtree
     newRoot.setLeft(buildTree(array, start, mid - 1));
     // Right subtree
@@ -184,11 +184,41 @@ const Tree = (arr) => {
 
   const find = (value) => {
     // blah blah find
+    let curr = _root;
+
+    while (curr) {
+      let currentValue = curr.getValue();
+      if (currentValue === value) {
+        return curr;
+      }
+
+      if (value > currentValue) {
+        curr = curr.getRight();
+      } else {
+        curr = curr.getLeft();
+      }
+    }
+
+    return "Value not found";
   };
 
-  const levelOrder = (callback) => {
+  const levelOrder = (callback, queue = [_root]) => {
     // blah blah breadth-first traversal with callback on each node.
     // Use array (queue) to keep track of child nodes yet to traverse
+
+    let curr = queue.splice(0, 1)[0];
+
+    if (!curr) return;
+
+    let left = curr.getLeft();
+    let right = curr.getRight();
+
+    if (left) queue.push(curr.getLeft());
+
+    if (right) queue.push(curr.getRight());
+
+    callback(curr);
+    levelOrder(callback, queue);
   };
 
   const inOrder = (callback) => {
@@ -230,11 +260,18 @@ const Tree = (arr) => {
     prettyPrint,
     insert,
     deleteItem,
+    find,
+    levelOrder,
   };
 };
 
 let arr = [1, 7, 4, 23, 8, 9, 3, 5, 67, 6345, 324];
 let spruce = Tree(arr);
 spruce.insert(13);
-console.log(spruce.deleteItem(0));
+// console.log(spruce.deleteItem(0));
 spruce.prettyPrint();
+// console.log(spruce.find(7));
+
+spruce.levelOrder((value) => {
+  console.log(value.getValue());
+});

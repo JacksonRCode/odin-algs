@@ -148,23 +148,18 @@ function LinkedList() {
     if (index + 1 > count) {
       append(value);
       console.log("Index out of range. Node added to end of list");
-      count += 1;
       return;
     } else if (index === 0) {
       prepend(value);
-      count += 1;
       return;
     }
 
-    let prev;
-    let curr = head;
-
+    let prev = head;
     for (let i = 0; i < index; i++) {
-      prev = curr;
-      curr = curr.getNext();
+      prev = prev.getNext();
     }
 
-    let newNode = Node(value, curr);
+    let newNode = Node(value, prev.getNext());
     prev.setNext(newNode);
 
     count += 1;
